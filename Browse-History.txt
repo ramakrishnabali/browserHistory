@@ -1,0 +1,326 @@
+import './App.css'
+import {Component} from 'react'
+
+// These are the list used in the application. You can move them to any component needed.
+const initialHistoryList = [
+  {
+    id: 0,
+    timeAccessed: '07:45 PM',
+    logoUrl: 'https://assets.ccbp.in/frontend/react-js/instagram-img.png',
+    title: 'Instagram',
+    domainUrl: 'instagram.com',
+  },
+  {
+    id: 1,
+    timeAccessed: '05:45 PM',
+    logoUrl: 'https://assets.ccbp.in/frontend/react-js/twitter-img.png',
+    title: 'Twitter. It’s what’s happening / Twitter',
+    domainUrl: 'twitter.com',
+  },
+  {
+    id: 2,
+    timeAccessed: '04:35 PM',
+    logoUrl: 'https://assets.ccbp.in/frontend/react-js/facebook-img.png',
+    title: 'Facebook – log in or sign up',
+    domainUrl: 'facebook.com',
+  },
+  {
+    id: 3,
+    timeAccessed: '04:25 PM',
+    logoUrl: 'https://assets.ccbp.in/frontend/react-js/linkedin-img.png',
+    title: 'LinkedIn: Log In or Sign Up',
+    domainUrl: 'linkedin.com',
+  },
+  {
+    id: 4,
+    timeAccessed: '04:00 PM',
+    logoUrl: 'https://assets.ccbp.in/frontend/react-js/hashnode-img.png',
+    title: 'Hashnode: Everything you need to start blogging as a developer!',
+    domainUrl: 'hashnode.com',
+  },
+  {
+    id: 5,
+    timeAccessed: '03:25 PM',
+    logoUrl: 'https://assets.ccbp.in/frontend/react-js/github-img.png',
+    title: 'GitHub: Where the world builds software · GitHub',
+    domainUrl: 'github.com',
+  },
+
+  {
+    id: 6,
+    timeAccessed: '02:45 PM',
+    logoUrl: 'https://assets.ccbp.in/frontend/react-js/react-img.png',
+    title: 'React – A JavaScript library for building user interfaces',
+    domainUrl: 'reactjs.org',
+  },
+  {
+    id: 7,
+    timeAccessed: '01:25 PM',
+    logoUrl: 'https://assets.ccbp.in/frontend/react-js/stackoverflow-img.png',
+    title: 'Stack Overflow - Where Developers Learn, Share, & Build Careers',
+    domainUrl: 'stackoverflow.com',
+  },
+
+  {
+    id: 8,
+    timeAccessed: '09:25 AM',
+    logoUrl: 'https://assets.ccbp.in/frontend/react-js/gmail-img.png',
+    title: 'Gmail',
+    domainUrl: 'mail.google.com',
+  },
+  {
+    id: 9,
+    timeAccessed: '09:00 AM',
+    logoUrl: 'https://assets.ccbp.in/frontend/react-js/google-img.png',
+    title: 'Google',
+    domainUrl: 'google.com',
+  },
+]
+
+// Replace your code here
+class App extends Component {
+  state = {historyList: initialHistoryList, inputSearch: ''}
+
+  getTheInputSearch = event => {
+    const userInput = event.target.value
+    // console.log(userInput)
+
+    this.setState({inputSearch: userInput})
+  }
+
+  deleteHistory = id => {
+    const {historyList} = this.state
+    const remainingList = historyList.filter(
+      eachHistoryList => eachHistoryList.id !== id,
+    )
+    console.log(id)
+    this.setState({historyList: remainingList})
+  }
+
+  render() {
+    const {historyList, inputSearch} = this.state
+
+    const filteredResult = historyList.filter(eachList =>
+      eachList.title.toLowerCase().includes(inputSearch.toLowerCase()),
+    )
+    let isList = null
+
+    if (filteredResult.length === 0) {
+      isList = false
+    } else {
+      isList = true
+    }
+
+    return (
+      <div className="appContainer">
+        <div className="headerContainer">
+          <img
+            src="https://assets.ccbp.in/frontend/react-js/history-website-logo-img.png"
+            alt="app logo"
+            className="appLogo"
+          />
+          <div className="inputContainer">
+            <div className="searchLogo">
+              <img
+                src="https://assets.ccbp.in/frontend/react-js/search-img.png"
+                alt="search"
+              />
+            </div>
+            <input
+              onChange={this.getTheInputSearch}
+              value={inputSearch}
+              type="search"
+              placeholder="Search History"
+              className="searchInput"
+            />
+          </div>
+        </div>
+
+        <div className="historyListContainer">
+          {isList ? (
+            <ul className="listContainer">
+              {filteredResult.map(each => (
+                <li className="historyContainer" key={each.id}>
+                  <div className="timeContainer">
+                    <p className="time">{each.timeAccessed}</p>
+                    <div className="titleContainer">
+                      <img
+                        className="historyLogo"
+                        src={each.logoUrl}
+                        alt="domain logo"
+                      />
+                      <p className="historyTitle">{each.title}</p>
+                      <p className="historyUrl">{each.domainUrl}</p>
+                    </div>
+                  </div>
+                  <button
+                    data-testid="delete"
+                    className="button"
+                    type="button"
+                    onClick={() => this.deleteHistory(each.id)}
+                  >
+                    <img
+                      src="https://assets.ccbp.in/frontend/react-js/delete-img.png"
+                      alt="delete"
+                    />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="historyTitle">there is no history to show</p>
+          )}
+        </div>
+      </div>
+    )
+  }
+}
+
+export default App
+
+
+
+
+
+
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.appContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.headerContainer {
+  background-color: #3367d6;
+  height: 09%;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+.inputContainer {
+  background-color: #3367d6;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-left: 400px;
+}
+
+.appLogo {
+  width: 100px;
+  height: 35px;
+  align-self: center;
+  margin-left: 20px;
+}
+
+.searchLogo {
+  width: 40px;
+  height: 35px;
+  margin-right: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #2830a7;
+  border: 2px solid #6697ff;
+}
+
+.searchInput {
+  background-color: #2830a7;
+  height: 35px;
+  color: #64748b;
+  font-size: 18px;
+  font-family: 'Roboto';
+  font-weight: 500;
+  padding: 8px;
+  width: 430px;
+  outline: none;
+  cursor: pointer;
+  border: 2px solid #6697ff;
+}
+
+.historyListContainer {
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+}
+
+.listContainer {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0px 4px 16px 0px #475569;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.historyContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.timeContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.time {
+  color: #475569;
+  font-size: 20px;
+  font-family: 'Roboto';
+  margin-right: 18px;
+}
+
+.titleContainer {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.historyLogo {
+  width: 50px;
+  height: 50px;
+  margin-right: 15px;
+  margin-left: 10px;
+}
+
+.historyTitle {
+  color: #64748b;
+  font-size: 20px;
+  font-weight: bold;
+  font-family: 'Roboto';
+  margin-right: 8px;
+}
+
+.historyUrl {
+  color: #475569;
+  font-size: 13px;
+  font-family: 'Roboto';
+}
+
+.button {
+  background-color: transparent;
+  border: 0px solid transparent;
+  cursor: pointer;
+  outline: none;
+}
+
